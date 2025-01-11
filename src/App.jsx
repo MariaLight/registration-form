@@ -72,7 +72,7 @@ function App() {
       if (target.value.length < 8) {
         error = 'Пароль должен быть не менее 8 символов';
       } else if (!/^(?=.*[a-z\u0400-\u04FF])[a-zA-Z\u0400-\u04FF\d]*$/ig.test(target.value)) {
-        error = 'Пароль должен содержать хотя бы одну цифру';
+        error = 'Пароль должен содержать хотя бы одну букву';
       } else if (!/^(?=.*[\d])[a-zA-Z\u0400-\u04FF\d]*$/ig.test(target.value)) {
         error = 'Пароль должен содержать хотя бы одну цифру';
       } else if (repeatedPassword.length > 0 && repeatedPassword !== target.value) {
