@@ -29,67 +29,78 @@ export const useStore = () => {
   };
 };
 
+const fieldsScheme = yup.object().shape({
+  email: yup.string()
+    .email('Некорректный формат email. Допустимый формат: example@domain.com')
+    .min(6, 'Некорректный email. Минимальная длина должна быть не менее 6 символов'),
+  password: yup.string()
+    .matches(/^(?=.*[a-z\u0400-\u04FF])[a-zA-Z\u0400-\u04FF\d]*$/ig, 'Пароль должен содержать хотя бы одну букву')
+    .matches(/^(?=.*[\d])[a-zA-Z\u0400-\u04FF\d]*$/ig, 'Пароль должен содержать хотя бы одну цифру')
+    .min(8, 'Пароль должен быть не менее 8 символов'),
+
+  })
+
 function App() {
-  const { getState, updateState } = useStore();
-  const [errors, setErrors] = useState(null);
-  const submitButtonRef = useRef(null);
+  // const { getState, updateState } = useStore();
+  // const [errors, setErrors] = useState(null);
+  // const submitButtonRef = useRef(null);
 
-  const onSubmit = (event) => {
-    event.preventDefault();
-    sendFormData(getState());
-  };
-  const { email, password, repeatedPassword } = getState();
-  const onChange = ({ target }) => {
+  // const onSubmit = (event) => {
+  //   event.preventDefault();
+  //   sendFormData(getState());
+  // };
+  // const { email, password, repeatedPassword } = getState();
+  // const onChange = ({ target }) => {
 
-    updateState(target.name, target.value);
+  //   updateState(target.name, target.value);
 
-    let error = null;
-    if (target.name === 'email') {
-      if (/\S+@\S+\.\S+/ig.test(target.value)) {
-        error = null;
-      }
-    } else if (target.name === 'password') {
-      if (target.value.length >= 8) {
-        error = null;
-      } else if (/^(?=.*[a-z\u0400-\u04FF])(?=.*[\d])[a-zA-Z\u0400-\u04FF\d]*$/ig.test(target.value)) {
-        error = null;
-      } 
-    } else if (target.name === 'repeatedPassword') {
-      if (password === target.value) {
-        submitButtonRef.current.focus();
-      }
-    }
-    setErrors(error);
-  };
+  //   let error = null;
+  //   if (target.name === 'email') {
+  //     if (/\S+@\S+\.\S+/ig.test(target.value)) {
+  //       error = null;
+  //     }
+  //   } else if (target.name === 'password') {
+  //     if (target.value.length >= 8) {
+  //       error = null;
+  //     } else if (/^(?=.*[a-z\u0400-\u04FF])(?=.*[\d])[a-zA-Z\u0400-\u04FF\d]*$/ig.test(target.value)) {
+  //       error = null;
+  //     }
+  //   } else if (target.name === 'repeatedPassword') {
+  //     if (password === target.value) {
+  //       submitButtonRef.current.focus();
+  //     }
+  //   }
+  //   setErrors(error);
+  // };
 
-  const onBlur = ({ target }) => {
-    let error = null;
-    if (target.name === 'email') {
-      if (target.value.length < 6) {
-        error = 'Некорректный email. Минимальная длина должна быть не менее 6 символов';
-      }
-      else if (!/\S+@\S+\.\S+/ig.test(target.value)) {
-        error = 'Некорректный формат email. Допустимый формат: example@domain.com';
-      }
-    } else if (target.name === 'password') {
-      if (target.value.length < 8) {
-        error = 'Пароль должен быть не менее 8 символов';
-      } else if (!/^(?=.*[a-z\u0400-\u04FF])[a-zA-Z\u0400-\u04FF\d]*$/ig.test(target.value)) {
-        error = 'Пароль должен содержать хотя бы одну цифру';
-      } else if (!/^(?=.*[\d])[a-zA-Z\u0400-\u04FF\d]*$/ig.test(target.value)) {
-        error = 'Пароль должен содержать хотя бы одну цифру';
-      } else if (repeatedPassword.length > 0 && repeatedPassword !== target.value) {
-        error = 'Пароли не совпадают';
-      }
-    } else if (target.name === 'repeatedPassword') {
-      if (target.value.length === 0) {
-        error = 'Повторите пароль';
-      } else if (password !== target.value) {
-        error = 'Пароли не совпадают';
-      }
-    }
-    setErrors(error);
-  }
+  // const onBlur = ({ target }) => {
+  //   let error = null;
+  //   if (target.name === 'email') {
+  //     if (target.value.length < 6) {
+  //       error = 'Некорректный email. Минимальная длина должна быть не менее 6 символов';
+  //     }
+  //     else if (!/\S+@\S+\.\S+/ig.test(target.value)) {
+  //       error = 'Некорректный формат email. Допустимый формат: example@domain.com';
+  //     }
+  //   } else if (target.name === 'password') {
+  //     if (target.value.length < 8) {
+  //       error = 'Пароль должен быть не менее 8 символов';
+  //     } else if (!/^(?=.*[a-z\u0400-\u04FF])[a-zA-Z\u0400-\u04FF\d]*$/ig.test(target.value)) {
+  //       error = 'Пароль должен содержать хотя бы одну букву';
+  //     } else if (!/^(?=.*[\d])[a-zA-Z\u0400-\u04FF\d]*$/ig.test(target.value)) {
+  //       error = 'Пароль должен содержать хотя бы одну цифру';
+  //     } else if (repeatedPassword.length > 0 && repeatedPassword !== target.value) {
+  //       error = 'Пароли не совпадают';
+  //     }
+  //   } else if (target.name === 'repeatedPassword') {
+  //     if (target.value.length === 0) {
+  //       error = 'Повторите пароль';
+  //     } else if (password !== target.value) {
+  //       error = 'Пароли не совпадают';
+  //     }
+  //   }
+  //   setErrors(error);
+  // }
 
 
   return (
